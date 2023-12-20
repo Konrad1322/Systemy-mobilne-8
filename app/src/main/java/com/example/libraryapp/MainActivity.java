@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,6 +39,33 @@ public class MainActivity extends AppCompatActivity {
         final BookAdapter adapter = new BookAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
+        ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Book swipedBook = adapter.getBookAtPosition(position);
+                if (swipedBook != null) {
+                    bookViewModel.delete(swipedBook);
+                    Snackbar.make(findViewById(R.id.coordinator_layout),
+                                    getString(R.string.book_archived),
+                                    Snackbar.LENGTH_LONG)
+                            .show();
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         bookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
         bookViewModel.findAll().observe(this, new Observer<List<Book>>() {
@@ -106,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.LENGTH_LONG)
                     .show();
     }
-    private class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener{
+    private class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         private TextView bookTitleTextView;
         private TextView bookAuthorTextView;
         private Book book;
@@ -115,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             super(inflater.inflate(R.layout.book_list_item, parent, false));
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-            itemView.setOnTouchListener(this);
 
             bookTitleTextView = itemView.findViewById(R.id.book_title);
             bookAuthorTextView = itemView.findViewById(R.id.book_author);
@@ -140,20 +166,6 @@ public class MainActivity extends AppCompatActivity {
         public boolean onLongClick(View v) {
             MainActivity.this.bookViewModel.delete(this.book);
             return true;
-        }
-
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_MOVE:
-                    Snackbar.make(findViewById(R.id.coordinator_layout),
-                                    getString(R.string.book_archived),
-                                    Snackbar.LENGTH_LONG)
-                            .show();
-                    return true;
-                default:
-                    return false; // Not handling this event
-            }
         }
     }
 
@@ -186,6 +198,13 @@ public class MainActivity extends AppCompatActivity {
         void setBooks(List<Book> books) {
             this.books = books;
             notifyDataSetChanged();
+        }
+
+        public Book getBookAtPosition(int position) {
+            if (books != null && position >= 0 && position < books.size()) {
+                return books.get(position);
+            }
+            return null;
         }
     }
 }
