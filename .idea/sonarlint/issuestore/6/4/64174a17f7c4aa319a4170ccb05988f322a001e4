@@ -1,0 +1,25 @@
+
+J
+java:S1604+"(Make this anonymous inner class a lambda(ÇÎáæşÿÿÿÿ8£Ì“§È1
+J
+java:S16043"(Make this anonymous inner class a lambda(“«ì×ıÿÿÿÿ8åÊ§È1
+W
+java:S1874*":Remove this use of "ViewModelProviders"; it is deprecated.(Ÿ€Ò8‘Í“§È1
+G
+java:S1874*"*Remove this use of "of"; it is deprecated.(Ÿ€Ò8’Í“§È1
+`
+java:S18747">Remove this use of "startActivityForResult"; it is deprecated.(ëÖƒ øÿÿÿÿ8ÖË§È1
+f
+java:S1874N"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8ÚË§È1
+‰
+java:S3252X"gUse static access with "com.google.android.material.snackbar.BaseTransientBottomBar" for "LENGTH_LONG".(Œ¦ˆüÿÿÿÿ8âË§È1
+‰
+java:S3252b"gUse static access with "com.google.android.material.snackbar.BaseTransientBottomBar" for "LENGTH_LONG".(Œ¦ˆüÿÿÿÿ8åË§È1
+‰
+java:S3252i"gUse static access with "com.google.android.material.snackbar.BaseTransientBottomBar" for "LENGTH_LONG".(Œ¦ˆüÿÿÿÿ8æË§È1
+‰
+java:S3252r"gUse static access with "com.google.android.material.snackbar.BaseTransientBottomBar" for "LENGTH_LONG".(Œ¦ˆüÿÿÿÿ8èË§È1
+\
+java:S1874’">Remove this use of "startActivityForResult"; it is deprecated.(Ìêò‹8óË§È1
+N
+java:S1144m"1Remove this unused private "archivedBook" method.(Ô‡ÛÛ8ùË§È1
